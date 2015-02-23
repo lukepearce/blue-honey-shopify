@@ -55,6 +55,9 @@
     {{ 'shopify_common.js' | shopify_asset_url | script_tag }}
   {% endif %}
 
+  <script src="//use.typekit.net/vrm2pak.js"></script>
+  <script>try{Typekit.load();}catch(e){}</script>
+
 </head>
 
 {% comment %}
@@ -62,102 +65,120 @@
 {% endcomment %}
 <body id="{{ page_title | handle }}" class="{% if customer %}customer-logged-in {% endif %}template-{{ template | replace: '.', ' ' | truncatewords: 1, '' | handle }}" >
 
-  <header class="site-header" role="banner">
-    <div class="wrapper">
 
-      <div class="grid--full">
-        <div class="grid__item large--one-half">
-          {% comment %}
-            Use the uploaded logo from theme settings if enabled.
-            Site name gets precedence with H1 tag on homepage, div on other pages.
-          {% endcomment %}
-          {% if template == 'index' %}
-            <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
-          {% else %}
-            <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
-          {% endif %}
-            {% if settings.logo_use_image %}
-              <a href="/" itemprop="url">
-                <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
-              </a>
+  <section class="left-side">
+
+    <ul>
+      <li>Shop
+        <ul>
+          {% for product_type in shop.types %}
+            <li>{{ product_type | link_to_type }}</li>
+          {% endfor %}
+        </ul>
+      </li>
+    </ul>
+  </section>
+
+  <section class="right-side">
+
+    <header class="site-header" role="banner">
+      <div class="wrapper">
+
+        <div class="grid--full">
+          <div class="grid__item large--one-half">
+            {% comment %}
+              Use the uploaded logo from theme settings if enabled.
+              Site name gets precedence with H1 tag on homepage, div on other pages.
+            {% endcomment %}
+            {% if template == 'index' %}
+              <h1 class="site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
             {% else %}
-              <a href="/" itemprop="url">{{ shop.name }}</a>
+              <div class="h1 site-header__logo large--left" itemscope itemtype="http://schema.org/Organization">
             {% endif %}
-          {% if template == 'index' %}
-            </h1>
-          {% else %}
-            </div>
-          {% endif %}
-        </div>
-        <div class="grid__item large--one-half text-center large--text-right">
-          {% comment %}
-            Show number of items in the cart and total cost in the /cart link
-
-            Ajaxify Cart Notes:
-              - #cartToggle toggles cart visibility (drawer or modal)
-              - #cartCount updates the total number of items in the cart
-              - #cartCost updates the total cost of the cart
-              - Documentation:  http://shopify.com/timber#ajax-cart
-          {% endcomment %}
-          <a href="/cart" id="CartToggle">
-            <span class="icon-fallback-text">
-              <span class="icon icon-cart" aria-hidden="true"></span>
-            </span>
-            {{ 'layout.cart.title' | t }}
-            (<span id="CartCount">{{ cart.item_count }}</span>
-            {{ 'layout.cart.items_count' | t: count: cart.item_count }}
-            <span id="CartCost">{{ cart.total_price | money }}</span>)
-          </a>
-
-          {% comment %}
-            If customer accounts are enabled, provide login and create account links
-          {% endcomment %}
-          {% if shop.customer_accounts_enabled %}
-          <p class="site-header__text-links">
-            {% if customer %}
-              {% if customer.first_name != blank %}
-                {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
-                {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+              {% if settings.logo_use_image %}
+                <a href="/" itemprop="url">
+                  <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" itemprop="logo">
+                </a>
               {% else %}
-                <a href="/account">{{ 'layout.customer.account' | t }}</a>
+                <a href="/" itemprop="url">{{ shop.name }}</a>
               {% endif %}
-              | {{ 'layout.customer.log_out' | t | customer_logout_link }}
+            {% if template == 'index' %}
+              </h1>
             {% else %}
-              {{ 'layout.customer.log_in' | t | customer_login_link }}
-              {% if shop.customer_accounts_optional %}
-              | {{ 'layout.customer.create_account' | t | customer_register_link }}
-              {% endif %}
+              </div>
             {% endif %}
-          </p>
-          {% endif %}
+          </div>
+          <div class="grid__item large--one-half text-center large--text-right">
+            {% comment %}
+              Show number of items in the cart and total cost in the /cart link
+
+              Ajaxify Cart Notes:
+                - #cartToggle toggles cart visibility (drawer or modal)
+                - #cartCount updates the total number of items in the cart
+                - #cartCost updates the total cost of the cart
+                - Documentation:  http://shopify.com/timber#ajax-cart
+            {% endcomment %}
+            <a href="/cart" id="CartToggle">
+              <span class="icon-fallback-text">
+                <span class="icon icon-cart" aria-hidden="true"></span>
+              </span>
+              {{ 'layout.cart.title' | t }}
+              (<span id="CartCount">{{ cart.item_count }}</span>
+              {{ 'layout.cart.items_count' | t: count: cart.item_count }}
+              <span id="CartCost">{{ cart.total_price | money }}</span>)
+            </a>
+
+            {% comment %}
+              If customer accounts are enabled, provide login and create account links
+            {% endcomment %}
+            {% if shop.customer_accounts_enabled %}
+            <p class="site-header__text-links">
+              {% if customer %}
+                {% if customer.first_name != blank %}
+                  {% capture first_name %}<a href="/account">{{ customer.first_name }}</a>{% endcapture %}
+                  {{ 'layout.customer.logged_in_as_html' | t: first_name: first_name }}
+                {% else %}
+                  <a href="/account">{{ 'layout.customer.account' | t }}</a>
+                {% endif %}
+                | {{ 'layout.customer.log_out' | t | customer_logout_link }}
+              {% else %}
+                {{ 'layout.customer.log_in' | t | customer_login_link }}
+                {% if shop.customer_accounts_optional %}
+                | {{ 'layout.customer.create_account' | t | customer_register_link }}
+                {% endif %}
+              {% endif %}
+            </p>
+            {% endif %}
+          </div>
         </div>
+
       </div>
+    </header>
 
-    </div>
-  </header>
-
-  <nav class="nav-bar" role="navigation">
-    <div class="wrapper">
-      <div class="grid">
-        <div class="grid__item large--two-thirds">
-          {% include 'site-nav' %}
-        </div>
-        <div class="grid__item large--one-third">
-          <div class="nav-search">
-            {% include 'search-bar' %}
+    <nav class="nav-bar" role="navigation">
+      <div class="wrapper">
+        <div class="grid">
+          <div class="grid__item large--two-thirds">
+            {% include 'site-nav' %}
+          </div>
+          <div class="grid__item large--one-third">
+            <div class="nav-search">
+              {% include 'search-bar' %}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </nav>
+    </nav>
 
-  <main class="wrapper main-content" role="main">
+    <main class="wrapper main-content" role="main">
 
-    {{ content_for_layout }}
+      {{ content_for_layout }}
 
-  </main>
+    </main>
 
-  {% include 'footer' %}
+    {% include 'footer' %}
+
+  </section>
 
   {{ 'timber.js' | asset_url | script_tag }}
 

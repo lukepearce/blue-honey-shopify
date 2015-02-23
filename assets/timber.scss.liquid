@@ -53,6 +53,7 @@ $viewportIncrement: 1px;
 $small: 480px;
 $medium: 768px;
 $large: 769px;
+$xlarge: 1200px;
 
 $postSmall: $small + $viewportIncrement;
 $preMedium: $medium - $viewportIncrement;
@@ -125,10 +126,10 @@ $radius: 3px;
 
 /*================ Typography ================*/
 
-$headerFontStack: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$headerFontStack: 'proxima-nova', Helvetica, Arial, sans-serif;
 $headerFontWeight: 700;
 
-$bodyFontStack: 'HelveticaNeue', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$bodyFontStack: 'proxima-nova', Helvetica, Arial, sans-serif;
 $baseFontSize: 14px; // Henseforth known as 1em
 
 @font-face {
@@ -2127,4 +2128,19 @@ label.error {
 
 .cart__remove {
   display: block;
+}
+
+
+// Layout
+
+@include at-query ($min, $large) {
+  .left-side {
+    position: fixed;
+    width: 15em;
+    height: 100%;
+  }
+
+  .right-side {
+    padding-left: 15em;
+  }
 }
