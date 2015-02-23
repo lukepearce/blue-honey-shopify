@@ -55,7 +55,7 @@
 
   {% endcomment %}
   <a href="{{ product.url | within: collection }}" class="grid__image">
-    <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+    <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}" data-alt-images="{% for image in product.images %}{{ image.src | img_url: 'large' }}{% if forloop.last != true %}, {% endif %}{% endfor %}">
   </a>
 
   <p class="h6">
