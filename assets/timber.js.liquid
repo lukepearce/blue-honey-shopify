@@ -266,65 +266,46 @@ timber.resetPasswordSuccess = function() {
 // Initialize Timber's JS on docready
 $(timber.init);
 
+function cycleImages() {
+  var clothing_thumbs = $( '.grid__image' );
 
-var clothing_thumbs = $( '.grid__image' );
+  //set image attriute to next image every one and a half seconds
 
-console.log(clothing_thumbs);
+  clothing_thumbs.each(function() {
 
-//function cycleImages( image_array, image ) {
+    var $el = $(this);
+    var image = $el.children('img')[0];
+    var handlers = createImageFlicker( image, image.getAttribute("data-alt-images").split(",") );
 
-  // console.log( image );
-  // console.log( image_array );
-  //
-  // var images = image_array;
-  //
-  //
-  // console.log( 'each image' );
-  // image.delay(1000).attr( 'src', image_array[i] );
-  //
-  //
-  // set image attriute to next image every one and a half seconds
+    $el.on( 'mouseover', function( e ){
+      handlers.start();
+    });
 
-  // clothing_thumbs.each(function() {
-  //
-  //   var $el = $(this);
-  //
-  //   $el.on( 'mouseover', function( e ){
-  //     //e.preventDefault();
-  //     var image = $el.children('img');
-  //     var image_array = image.data("alt-images").split(",");
-  //
-  //     timer = setTimeout(animate, 1000);
-  //     animate( image, image_array );
-  //   });
-  //
-  //   $el.on( 'mouseout', function( e ){
-  //     stopAnimation();
-  //   });
-  //
-  // });
-  //
-  // var img_index = 0;
-  // var timer;
-  //
-  // // Start animation
-  // function animate( image, image_array ) {
-  //
-  //     console.log( 'image-array inside animate ' + image_array );
-  //
-  //     image.src = image_array[img_index];
-  //
-  //     img_index++;
-  //
-  //     if (img_index == image_array.length){
-  //         img_index = 0;
-  //     }
-  //
-  //     timer = setTimeout(animate, 1000);
-  // }
-  //
-  // function stopAnimation() {
-  //     clearTimeout(timer);
-  // }
+    $el.on( 'mouseout', function( e ){
+      handlers.stop();
+    });
 
-//}
+  });
+
+
+  function createImageFlicker( image, image_array ){
+    var current_i = 0;
+    var timer = null;
+    function start(){
+       timer = window.setInterval( function(){
+         image.src = image_array[current_i];
+         current_i += 1;
+         if( current_i === image_array.length ){
+           current_i = 0;
+         }
+       }, 200 );
+     }
+     function stop(){
+       window.clearTimeout(timer);
+     }
+    return {
+      start: start,
+      stop: stop
+    };
+  }
+}
