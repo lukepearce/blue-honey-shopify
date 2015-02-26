@@ -291,21 +291,25 @@ function cycleImages() {
   function createImageFlicker( image, image_array ){
     var current_i = 0;
     var timer = null;
+
     function start(){
-       timer = window.setInterval( function(){
-         image.src = image_array[current_i];
-         current_i += 1;
-         if( current_i === image_array.length ){
-           current_i = 0;
-         }
-       }, 200 );
-     }
-     function stop(){
-       window.clearTimeout(timer);
-     }
+      timer = window.setInterval( function(){
+        image.src = image_array[current_i];
+        current_i += 1;
+        if( current_i === image_array.length ){
+          current_i = 0;
+        }
+      }, 175 );
+    }
+    function stop(){
+      window.clearTimeout(timer);
+      image.src = image_array[0];
+    }
     return {
       start: start,
       stop: stop
     };
   }
 }
+
+cycleImages();
