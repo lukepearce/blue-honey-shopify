@@ -7,8 +7,6 @@
     - http://docs.shopify.com/themes/liquid-variables/global
 {% endcomment %}
 
-<h2>{{ 'home_page.sections.frontpage_title' | t }}</h2>
-
 {% comment %}
   Use class grid-uniform to have evenly sized columns clear
   each other properly at each breakpoint.
@@ -28,7 +26,7 @@
       Example:
         - {% assign grid_item_width = 'large--one-third medium--one-half' %}
     {% endcomment %}
-    {% assign grid_item_width = 'large--one-quarter medium--one-half' %}
+    {% assign grid_item_width = 'large--one-third medium--one-half' %}
     {% include 'product-grid-item' %}
 
   {% else %}
@@ -46,11 +44,7 @@
 
 </div>
 
-<hr>
-
-<h2>{{ 'home_page.sections.featured_title' | t }}</h2>
-
-<div class="grid-uniform">
+<!-- <div class="grid-uniform">
 
   {% comment %}
     Show five collections, unless it's 'frontpage'.
@@ -77,22 +71,7 @@
     {% endunless %}
   {% endfor %}
 
-  {% comment %}
-    For onboarding new users to your theme, we add some default collections and onboarding tutorials to help populate their store
-  {% endcomment %}
-
-  {% if isEmpty %}
-    {% unless emptyState %}
-      {{ 'theme-onboarding.css' | global_asset_url | stylesheet_tag }}
-      {% assign emptyState = true %}
-    {% endunless %}
-
-    {% include 'onboarding-featured-collections' %}
-  {% endif %}
-
-</div>
-
-<hr>
+</div> -->
 
 {% comment %}
   Loop through three recent blog articles with the following code.
@@ -101,7 +80,7 @@
   handle we want to focus on. For this example we'll use the default 'news',
   but you can create a blog page-specific content if you want.
 {% endcomment %}
-<h2>{{ 'home_page.sections.news_title' | t }}</h2>
+<!-- <h2>{{ 'home_page.sections.news_title' | t }}</h2>
 
 <div class="grid">
   {% for article in blogs['news'].articles limit:3 %}
@@ -142,4 +121,4 @@
     </div>
 
   {% endfor %}
-</div>
+</div> -->
